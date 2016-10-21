@@ -1,0 +1,7 @@
+<linearmodel>
+    <model>../data/linear_models/event_model/tfmgDocs_new.model</model>
+    <wordspace>../data/linear_models/event_model/wordSpace</wordspace>
+    <stopwords>../data/weibo.stopwords</stopwords>
+    <label>../data/linear_models/event_model/label2id</label>
+    <wordseg>../../wordseg/conf</wordseg>
+</linearmodel>

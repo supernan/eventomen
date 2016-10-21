@@ -1,0 +1,7 @@
+<event_omen>
+    <event_linearmodel>../conf/linearmodel/eventmodel.xml</event_linearmodel>
+    <tense_linearmodel>../conf/linearmodel/tensemodel.xml</tense_linearmodel>
+    <blacklist>../data/hispeople.txt</blacklist>
+    <trigger>../data/triggers.txt</trigger>
+    <action>../data/actions.txt</action>
+</event_omen>
