@@ -186,7 +186,7 @@ bool CEventOmenDetector::__DetectByEvent(vector<pstWeibo> &rCorpus, vector<pstWe
     }
 
     int gSensitiveType[] = {1, 2, 3, 5, 9, 11}; //TODO
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 6; i++)
     {
         int nLabel = gSensitiveType[i];
         if (nLabel >= vPredictRes.size())
@@ -195,7 +195,10 @@ bool CEventOmenDetector::__DetectByEvent(vector<pstWeibo> &rCorpus, vector<pstWe
             continue;
         }
         vector<pstWeibo> vClassRes = vPredictRes[nLabel];
-        rRes.assign(vClassRes.begin(), vClassRes.end());
+        for (int j = 0; j < vClassRes.size(); j++)
+        {
+            rRes.push_back(vClassRes[j]);
+        }
     }
 
     LOG(INFO) << "__DetectByEvent Succeed" << endl;
@@ -302,6 +305,12 @@ bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWe
     }
 
     vector<pstWeibo> vMatchSents = vSentPredRes[nLabel];
+    if (vMatchSents.empty())
+    {
+        LOG(WARNING) << "No sentence match after tense analysis" << endl;
+        return true;
+    }
+
     if (!__AnalysisSentTense(rCorpus, vMatchSents, rRes))
     {
         LOG(ERROR) << "__DetectByTense Failed __AnalysisSentTense Error" << endl;
@@ -361,16 +370,16 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
         LOG(WARNING) << "DetectEventOmen Error __DetectByEvent Failed" << endl;
         return false;
     }
-    if (!__DetectByPattern(vEventFilterRes, vPatternFilterRes))
+    if (!__DetectByPattern(vEventFilterRes, rRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByPattern Failed" << endl;
         return false;
     }
-    if (!__DetectByTense(vPatternFilterRes, rRes))
+    /*if (!__DetectByTense(vEventFilterRes, rRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByTense Failed" << endl;
         return false;
-    }
+    }*/
 
     LOG(INFO) << "DetectEventOmen Succeed" << endl;
     return true;
