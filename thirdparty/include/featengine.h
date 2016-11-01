@@ -12,6 +12,9 @@
 using namespace WeiboTopic_ICT;
 using namespace std;
 
+#define BASIC_TF_FEAT 0
+#define TIME_KEY_TF_FEAT 1
+
 namespace feature_engine
 {
     /*
@@ -35,9 +38,11 @@ namespace feature_engine
     class IFeatureEngine
     {
         public:
+
             /*
-            * \fn > FeatExtractByWords
-            * \brief > extract feature by words and tags
+            * \fn > FeatExtractByController
+            * \brief > extract feature by feature engine
+            * \param [in] rFeatID > feature id used this id to decide which function is going to use
             * \param [in] vWords > word segment result like w1/t1 w2/t2 ....
             * \param [out] sErInfo > record erro info
             * \param [out] pDoc > record features in doc object
@@ -45,8 +50,8 @@ namespace feature_engine
             * \date  > 2016/10
             * \author > zhounan(zhounan@software.ict.ac.cn)
             */
-            static bool FeatExtractByWords(const vector<string> &vWords, pstWeibo pDoc, string &sErInfo);
-
+            static bool FeatExtractByController(const int &rFeatID, const vector<string> &vWords,
+                                                pstWeibo pDoc, string &sErInfo);
 
             /*
             * \fn > InitFeatureEngine
@@ -59,7 +64,36 @@ namespace feature_engine
             static bool InitFeatureEngine(const featureEngineParam &param);
 
         private:
+            /*
+            * \fn > FeatExtractByWords
+            * \brief > extract feature by words and tags
+            * \param [in] vWords > word segment result like w1/t1 w2/t2 ....
+            * \param [out] sErInfo > record erro info
+            * \param [out] pDoc > record features in doc object
+            * \ret bool > whether function is succeed
+            * \date  > 2016/10
+            * \author > zhounan(zhounan@software.ict.ac.cn)
+            */
+            static bool __FeatExtractByWords(const vector<string> &vWords, pstWeibo pDoc, string &sErInfo);
+
+
+            /*
+            * \fn > FeatExtractByTimeKey
+            * \brief > extract feature by words and tags
+            * \param [in] vWords > word segment result like w1/t1 w2/t2 ....
+            * \param [out] sErInfo > record erro info
+            * \param [out] pDoc > record features in doc object
+            * \ret bool > whether function is succeed
+            * \date  > 2016/10
+            * \author > zhounan(zhounan@software.ict.ac.cn)
+            */
+            static bool __FeatExtractByTimeKey(const vector<string> &vWords, pstWeibo pDoc, string &sErInfo);
+
+            // stop words
             static set<string> sm_StopWords;
+
+            // postag blacklist
+            static vector<string> sm_PosTagBlacklist;
 
 
 

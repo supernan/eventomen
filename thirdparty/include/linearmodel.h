@@ -264,6 +264,9 @@ namespace linear_model
             //stop words
             set<string> m_sStopWords;
 
+            // feature id
+            int m_nFeatID;
+
 
     };
 }

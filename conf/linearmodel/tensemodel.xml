@@ -1,7 +1,8 @@
 <linearmodel>
     <model>../data/linear_models/tense_model/tense.model</model>
-    <wordspace>../data/linear_models/tense_model/wordSpace</wordspace>
+    <wordspace>../data/linear_models/tense_model/wordSpace.bk2</wordspace>
     <stopwords>../data/weibo.stopwords</stopwords>
     <label>../data/linear_models/tense_model/label2id</label>
     <wordseg>../../wordseg/conf</wordseg>
+    <featid>1</featid>
 </linearmodel>

@@ -216,6 +216,9 @@ bool CEventOmenDetector::__SentenceBreak(vector<pstWeibo> &rCorpus, vector<pstWe
 
     vector<string> vDelimit;
     vDelimit.push_back("。");
+    vDelimit.push_back(".");
+    vDelimit.push_back("!");
+    vDelimit.push_back("?");
     vDelimit.push_back("！");
     vDelimit.push_back("？");
 
@@ -266,6 +269,7 @@ bool CEventOmenDetector::__AnalysisSentTense(vector<pstWeibo> &rCorpus, vector<p
             LOG(ERROR) << "__AnalysisSentTense Error doc idx is out of boundry" << endl;
             continue;
         }
+        cout<<"tense: "<<rSentsPredRes[i]->source<<endl;
         rRes.push_back(rCorpus[nIdx]);
     }
 
@@ -370,16 +374,16 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
         LOG(WARNING) << "DetectEventOmen Error __DetectByEvent Failed" << endl;
         return false;
     }
-    if (!__DetectByPattern(vEventFilterRes, rRes))
+    if (!__DetectByPattern(vEventFilterRes, vPatternFilterRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByPattern Failed" << endl;
         return false;
     }
-    /*if (!__DetectByTense(vEventFilterRes, rRes))
+    if (!__DetectByTense(vPatternFilterRes, rRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByTense Failed" << endl;
         return false;
-    }*/
+    }
 
     LOG(INFO) << "DetectEventOmen Succeed" << endl;
     return true;

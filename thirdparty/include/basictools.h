@@ -30,4 +30,16 @@ namespace basic_tools
     *  \date	2016/10
     */
 	void Strip(string &rStr, const char *pSym);
+
+
+    /*!
+    *  \fn	StartWith
+    *  \brief	if rStr starts with pattern
+    *  \param [in]	str : source text
+    *  \param [out] pattern : pattern
+    *  \return	if strip sucessfully, return true, else retur  false
+    *  \author	zhounan(zhounan@software.ict.ac.cn)
+    *  \date	2016/10
+    */
+    bool StartWith(const string &rStr, const string &rPattern);
 }

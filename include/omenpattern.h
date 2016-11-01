@@ -68,6 +68,18 @@ namespace omen_pattern
              */
             static bool __DocWordCollocation(const string sText);
 
+
+            /*
+             * \fn > __SentenceSegment
+             * \brief > cut text to sentences
+             * \param[in] sText > doc text
+             * \param[out] vSents > setences
+             * \date > 2016/10
+             * \author > zhounan(zhounan@software.ict.ac.cn)
+             */
+            static void __SentenceSegment(const string &sText, vector<string> &vSents);
+
+
         private:
             // .pattern triggers
             static vector<string> sm_vTriggers;

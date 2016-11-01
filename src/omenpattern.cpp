@@ -2,8 +2,10 @@
 #include <fcntl.h>
 #include <fstream>
 #include "omenpattern.h"
+#include "util.h"
 
 using namespace omen_pattern;
+using namespace tools;
 
 vector<string> OmenPattern::sm_vActions;
 vector<string> OmenPattern::sm_vTriggers;
@@ -74,6 +76,20 @@ bool OmenPattern::__DocWordCollocation(const string sText)
 }
 
 
+void OmenPattern::__SentenceSegment(const string &sText, vector<string> &vSents)
+{
+    if (sText.length() == 0)
+        return;
+    vector<string> vDelimit;
+    vDelimit.push_back("。");
+    vDelimit.push_back("！");
+    vDelimit.push_back("？");
+    vSents.clear();
+
+    UtilInterface::sentence_cut(sText, vDelimit, vSents);
+}
+
+
 bool OmenPattern::WordCollocationPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rRes, string &rErrInfo)
 {
     if (sm_vActions.empty())
@@ -90,10 +106,19 @@ bool OmenPattern::WordCollocationPattern(vector<pstWeibo> &rCorpus, vector<pstWe
     rRes.clear();
     for (int i = 0; i < rCorpus.size(); i++)
     {
-        if (__DocWordCollocation(rCorpus[i]->source))
+        vector<string> vSents;
+        __SentenceSegment(rCorpus[i]->source, vSents);
+        bool bMatch = false;
+        for (int j = 0; j < vSents.size(); j++)
         {
-            rRes.push_back(rCorpus[i]);
+            if (__DocWordCollocation(vSents[j]))
+            {
+                bMatch = true;
+                break;
+            }
         }
+        if (bMatch)
+            rRes.push_back(rCorpus[i]);
     }
 
     return true;
