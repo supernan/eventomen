@@ -3,6 +3,6 @@
     <wordspace>../data/linear_models/event_model/wordSpace</wordspace>
     <stopwords>../data/weibo.stopwords</stopwords>
     <label>../data/linear_models/event_model/label2id</label>
-    <wordseg>../../wordseg/conf</wordseg>
+    <wordseg>../../ws/wordSeg_data/</wordseg>
     <featid>0</featid>
 </linearmodel>

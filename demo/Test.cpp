@@ -55,6 +55,7 @@ int main(int argc, char **argv)
 	vector<pstWeibo> corpus;
     for (int i = 0; i < text.size(); i++)
         corpus.push_back(&text[i]);
+    cout<<"mark here"<<endl;
 
     if (!model.DetectEventOmen(corpus, res))
     {
@@ -66,6 +67,7 @@ int main(int argc, char **argv)
     {
         cout<<i<<" "<<res[i]->source<<endl;
     }
+    cout<<"end mark"<<endl;
 	return 0;
 }
 

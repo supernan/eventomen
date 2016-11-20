@@ -139,9 +139,12 @@ CEventOmenDetector::CEventOmenDetector(const string &rConfPath)
 
 CEventOmenDetector::~CEventOmenDetector()
 {
-    delete m_pEventClassifier;
-    delete m_pTenseClassifier;
-    delete m_pACauto;
+    if (m_pEventClassifier != NULL)
+        delete m_pEventClassifier;
+    if (m_pTenseClassifier != NULL)
+        delete m_pTenseClassifier;
+    if (m_pACauto != NULL)
+        delete m_pACauto;
 }
 
 
