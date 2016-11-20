@@ -13,7 +13,7 @@
 #include "tinystr.h"
 #include "tinyxml.h"
 #include "glog/logging.h"
-#include "ICTCLAS50.h"
+#include "WordSeg.h"
 #include "basictools.h"
 #include "featengine.h"
 #include "thpool.h"
@@ -21,7 +21,7 @@
 using namespace std;
 using namespace WeiboTopic_ICT;
 using namespace feature_engine;
-
+using namespace ICTLAP::CORE::WORDSEG;
 
 namespace linear_model
 {
@@ -249,6 +249,9 @@ namespace linear_model
             pthread_mutex_t m_ModelMutex;
 
         private:
+            // wordseg api
+            WordSegApi m_wordSegApi;
+
             // model name
             string m_sModelName;
 
