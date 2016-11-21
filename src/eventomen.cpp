@@ -69,6 +69,7 @@ bool CEventOmenDetector::__LoadConfigFile(const string &rConfPath)
     m_sActionPath = pActionNode->FirstChild()->Value();
 
     LOG(INFO) << "Load config file succeed" << endl;
+    delete pDocument;
     return true;
 }
 
