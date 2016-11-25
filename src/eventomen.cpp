@@ -68,6 +68,14 @@ bool CEventOmenDetector::__LoadConfigFile(const string &rConfPath)
     }
     m_sActionPath = pActionNode->FirstChild()->Value();
 
+    TiXmlElement *pSentiNode = pActionNode->NextSiblingElement();
+    if (pSentiNode == NULL)
+    {
+        LOG(FATAL) << "Senti Node is NUll Config file is error " << endl;
+        return false;
+    }
+    m_sSentiModelConf = pSentiNode->FirstChild()->Value();
+
     LOG(INFO) << "Load config file succeed" << endl;
     delete pDocument;
     return true;
@@ -108,6 +116,14 @@ CEventOmenDetector::CEventOmenDetector(const string &rConfPath)
     {
         LOG(FATAL) << "CEventOmenDetector Failed Init black list failed" << endl;
     }
+
+
+    m_pSentiModel = new CSentimentModel(m_sSentiModelConf);
+    if (m_pSentiModel == NULL)
+    {
+        LOG(FATAL) << "CEventOmenDetector Failed Init Sentimodel Failed" <<endl;
+    }
+
     string sEventName = "eventmodel";
     m_pEventClassifier = new CClassifier(m_sEventModelConf, sEventName);
     if (m_pEventClassifier == NULL)
@@ -140,6 +156,8 @@ CEventOmenDetector::CEventOmenDetector(const string &rConfPath)
 
 CEventOmenDetector::~CEventOmenDetector()
 {
+    if (m_pSentiModel != NULL)
+        delete m_pSentiModel;
     if (m_pEventClassifier != NULL)
         delete m_pEventClassifier;
     if (m_pTenseClassifier != NULL)
@@ -169,6 +187,29 @@ bool CEventOmenDetector::__KeywordsFilter(vector<pstWeibo> &rCorpus, vector<pstW
     }
     m_pACauto->clear();
     LOG(INFO) << "__KeywordsFilter Succeed" << endl;
+    return true;
+}
+
+
+bool CEventOmenDetector::__DetectBySentiment(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rRes)
+{
+    if (rCorpus.empty())
+    {
+        LOG(WARNING) << "__DetectBySentiment Failed Corpus is empty" << endl;
+        return false;
+    }
+    rRes.clear();
+    vector<double> scores;
+    if (!m_pSentiModel->BatchAnalysis(rCorpus, scores))
+    {
+        LOG(ERROR) << "__DetectBySentiment Error" << endl;
+        return false;
+    }
+    for (int i = 0; i < scores.size(); i++)
+    {
+        if (scores[i] < 0)
+            rRes.push_back(rCorpus[i]);
+    }
     return true;
 }
 

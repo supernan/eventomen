@@ -4,4 +4,5 @@
     <blacklist>../data/hispeople.txt</blacklist>
     <trigger>../data/triggers.txt</trigger>
     <action>../data/actions.txt</action>
+    <sentimodel>../conf/sentimodel/senti_classifier.weibo.config.xml</sentimodel>
 </event_omen>

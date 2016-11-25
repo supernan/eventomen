@@ -5,10 +5,12 @@
 #include <vector>
 #include "DataType.h"
 #include "linearmodel.h"
+#include "sentimodel.h"
 #include "util.h"
 
 using namespace WeiboTopic_ICT;
 using namespace linear_model;
+using namespace senti_analysis;
 using namespace tools;
 
 
@@ -84,6 +86,18 @@ namespace event_omen
 
 
             /*
+             * \fn > __DetectBySentiment
+             * \brief > filter docs by sentiment analysis
+             * \param[in] rCorpus > corpus to filer
+             * \param[out] rRes > filter result
+             * \ret bool > whether function succeed
+             * \date > 2016/10
+             * \author > zhounan@(zhounan@software.ict.ac.cn)
+             */
+            bool __DetectBySentiment(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rRes);
+
+
+            /*
              * \fn > __DetectByEvent
              * \brief > detect senstive event
              * \param[in] rCorpus > corpus to detect
@@ -145,6 +159,8 @@ namespace event_omen
 
 
         private:
+            // sentimodel conf path
+            string m_sSentiModelConf;
 
             // event model conf path
             string m_sEventModelConf;
@@ -166,6 +182,9 @@ namespace event_omen
 
             // tense classifier
             CClassifier *m_pTenseClassifier;
+
+            // sentimodel
+            CSentimentModel *m_pSentiModel;
 
             // ac-automation
             AC_automation *m_pACauto;
