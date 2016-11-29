@@ -126,12 +126,14 @@ namespace event_omen
              * \fn > __DetectBySentPattern
              * \brief > filter docs by setence pattern
              * \param[in] rSentCorpus > corpus to filer
+             * \param[out] vDocSents > doc sentences
              * \param[out] rRes > filter result
              * \ret bool > whether function succeed
              * \date > 2016/10
              * \author > zhounan@(zhounan@software.ict.ac.cn)
              */
-            bool __DetectBySentPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rSentRes);
+            bool __DetectBySentPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &vDocSents,
+                                       vector<pstWeibo> &rSentRes);
 
 
             /*

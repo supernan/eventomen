@@ -359,8 +359,8 @@ bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWe
         LOG(ERROR) << "__DetectByTense Failed __AnalysisSentTense Error" << endl;
     }
 
-    for (int i = 0; i < vDocSents.size(); i++)
-        delete vDocSents[i];
+    //for (int i = 0; i < vDocSents.size(); i++)
+     //   delete vDocSents[i];
 
 
     LOG(INFO) << "__DetectByTense Succeed" << endl;
@@ -368,7 +368,8 @@ bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWe
 }
 
 
-bool CEventOmenDetector::__DetectBySentPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rSentRes)
+bool CEventOmenDetector::__DetectBySentPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &vDocSents,
+                                               vector<pstWeibo> &rSentRes)
 {
     if (rCorpus.empty())
     {
@@ -376,7 +377,7 @@ bool CEventOmenDetector::__DetectBySentPattern(vector<pstWeibo> &rCorpus, vector
         return false;
     }
 
-    vector<pstWeibo> vDocSents;
+    vDocSents.clear();
     if (!__SentenceBreak(rCorpus, vDocSents))
     {
         LOG(ERROR) << "__DetectBySentPattern Failed __SentenceBreak Error" << endl;
@@ -407,6 +408,7 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
 
     rRes.clear();
 
+    vector<pstWeibo> vDocSents;
     vector<pstWeibo> vKeyFilterRes;
     vector<pstWeibo> vSentiFilterRes;
     vector<pstWeibo> vEventFilterRes;
@@ -428,7 +430,7 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
         LOG(WARNING) << "DetectEventOmen Error __DetectByEvent Failed" << endl;
         return false;
     }
-    if (!__DetectBySentPattern(vEventFilterRes, vPatternFilterRes))
+    if (!__DetectBySentPattern(vEventFilterRes, vDocSents, vPatternFilterRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectBySentPattern Failed" << endl;
         return false;
@@ -438,6 +440,10 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
         LOG(WARNING) << "DetectEventOmen Error __DetectByTense Failed" << endl;
         return false;
     }
+
+    for (int i = 0; i < vDocSents.size(); i++)
+        if (vDocSents[i] != NULL)
+            delete vDocSents[i];
 
     LOG(INFO) << "DetectEventOmen Succeed" << endl;
     return true;
