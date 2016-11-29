@@ -113,24 +113,25 @@ namespace event_omen
              * \fn > __DetectByTense
              * \brief > detect tense of doc, and filter by tense
              * \param[in] rCorpus > corpus to detect
+             * \param[in] rSentRes > sents result from pattern filter
              * \param[out] rRes > filter result
              * \ret bool > whether function succeed
              * \date > 2016/10
              * \author > zhounan@(zhounan@software.ict.ac.cn)
              */
-            bool __DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rRes);
+            bool __DetectByTense(vector<pstWeibo> &rCorpus,  vector<pstWeibo> &rSentRes, vector<pstWeibo> &rRes);
 
 
             /*
-             * \fn > __DetectByPattern
-             * \brief > filter docs by pattern
-             * \param[in] rCorpus > corpus to filer
+             * \fn > __DetectBySentPattern
+             * \brief > filter docs by setence pattern
+             * \param[in] rSentCorpus > corpus to filer
              * \param[out] rRes > filter result
              * \ret bool > whether function succeed
              * \date > 2016/10
              * \author > zhounan@(zhounan@software.ict.ac.cn)
              */
-            bool __DetectByPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rRes);
+            bool __DetectBySentPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rSentRes);
 
 
             /*

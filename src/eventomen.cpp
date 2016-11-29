@@ -323,7 +323,7 @@ bool CEventOmenDetector::__AnalysisSentTense(vector<pstWeibo> &rCorpus, vector<p
 }
 
 
-bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rRes)
+bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWeibo> &vDocSents, vector<pstWeibo> &rRes)
 {
     if (rCorpus.empty())
     {
@@ -332,12 +332,6 @@ bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWe
     }
 
     rRes.clear();
-    vector<pstWeibo> vDocSents;
-    if (!__SentenceBreak(rCorpus, vDocSents))
-    {
-        LOG(ERROR) << "__DetectByTense Failed __SentenceBreak Error" << endl;
-        return false;
-    }
 
     vector<vector<pstWeibo> > vSentPredRes;
     if (!m_pTenseClassifier->BatchPredict(vDocSents, vSentPredRes))
@@ -368,28 +362,37 @@ bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWe
     for (int i = 0; i < vDocSents.size(); i++)
         delete vDocSents[i];
 
+
     LOG(INFO) << "__DetectByTense Succeed" << endl;
     return true;
 }
 
 
-bool CEventOmenDetector::__DetectByPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rRes)
+bool CEventOmenDetector::__DetectBySentPattern(vector<pstWeibo> &rCorpus, vector<pstWeibo> &rSentRes)
 {
     if (rCorpus.empty())
     {
-        LOG(WARNING) << "__DetectByPattern Failed Corpus is emtpy" << endl;
+        LOG(WARNING) << "__DetectBySentPattern Failed Corpus is emtpy" << endl;
         return false;
     }
 
-    rRes.clear();
-    string sPatternErr;
-    if (!OmenPattern::WordCollocationPattern(rCorpus, rRes, sPatternErr))
+    vector<pstWeibo> vDocSents;
+    if (!__SentenceBreak(rCorpus, vDocSents))
     {
-        LOG(ERROR) << "__DetectByPattern Failed  Pattern error " << sPatternErr << endl;
+        LOG(ERROR) << "__DetectBySentPattern Failed __SentenceBreak Error" << endl;
         return false;
     }
 
-    LOG(INFO) << "__DetectByPattern Succeed" << endl;
+    rSentRes.clear();
+    string sPatternErr;
+    if (!OmenPattern::WordCollocationPattern(vDocSents, rSentRes, sPatternErr))
+    {
+        LOG(ERROR) << "__DetectBySentPattern Failed  Pattern error " << sPatternErr << endl;
+        return false;
+    }
+
+
+    LOG(INFO) << "__DetectBySentPattern Succeed" << endl;
     return true;
 }
 
@@ -419,12 +422,12 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
         LOG(WARNING) << "DetectEventOmen Error __DetectByEvent Failed" << endl;
         return false;
     }
-    if (!__DetectByPattern(vEventFilterRes, vPatternFilterRes))
+    if (!__DetectBySentPattern(vEventFilterRes, vPatternFilterRes))
     {
-        LOG(WARNING) << "DetectEventOmen Error __DetectByPattern Failed" << endl;
+        LOG(WARNING) << "DetectEventOmen Error __DetectBySentPattern Failed" << endl;
         return false;
     }
-    if (!__DetectByTense(vPatternFilterRes, rRes))
+    if (!__DetectByTense(vEventFilterRes, vPatternFilterRes, rRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByTense Failed" << endl;
         return false;
