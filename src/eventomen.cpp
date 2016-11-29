@@ -325,9 +325,9 @@ bool CEventOmenDetector::__AnalysisSentTense(vector<pstWeibo> &rCorpus, vector<p
 
 bool CEventOmenDetector::__DetectByTense(vector<pstWeibo> &rCorpus, vector<pstWeibo> &vDocSents, vector<pstWeibo> &rRes)
 {
-    if (rCorpus.empty())
+    if (vDocSents.empty())
     {
-        LOG(WARNING) << "__DetectByTense Failed Corpus is empty" << endl;
+        LOG(WARNING) << "__DetectByTense Failed DocCorpus is empty" << endl;
         return false;
     }
 
@@ -408,6 +408,7 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
     rRes.clear();
 
     vector<pstWeibo> vKeyFilterRes;
+    vector<pstWeibo> vSentiFilterRes;
     vector<pstWeibo> vEventFilterRes;
     vector<pstWeibo> vPatternFilterRes;
     //vector<pstWeibo> vTenseFilterRes;
@@ -417,7 +418,12 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
         LOG(WARNING) << "DetectEventOmen Error __KeywordsFilter Failed " << endl;
         return false;
     }
-    if (!__DetectByEvent(vKeyFilterRes, vEventFilterRes))
+    if (!__DetectBySentiment(vKeyFilterRes, vSentiFilterRes))
+    {
+        LOG(WARNING) << "DetectEventOmen Error __KeywordsFilter Failed " << endl;
+        return false;
+    }
+    if (!__DetectByEvent(vSentiFilterRes, vEventFilterRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByEvent Failed" << endl;
         return false;
