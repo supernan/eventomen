@@ -414,31 +414,32 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
     vector<pstWeibo> vEventFilterRes;
     vector<pstWeibo> vPatternFilterRes;
     //vector<pstWeibo> vTenseFilterRes;
+    bool bDetectRet = true;
 
     if (!__KeywordsFilter(rCorpus, vKeyFilterRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __KeywordsFilter Failed " << endl;
-        return false;
+        bDetectRet = false;
     }
     if (!__DetectBySentiment(vKeyFilterRes, vSentiFilterRes))
     {
-        LOG(WARNING) << "DetectEventOmen Error __KeywordsFilter Failed " << endl;
-        return false;
+        LOG(WARNING) << "DetectEventOmen Error __SentimentFilter Failed " << endl;
+        bDetectRet = false;
     }
     if (!__DetectByEvent(vSentiFilterRes, vEventFilterRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByEvent Failed" << endl;
-        return false;
+        bDetectRet = false;
     }
     if (!__DetectBySentPattern(vEventFilterRes, vDocSents, vPatternFilterRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectBySentPattern Failed" << endl;
-        return false;
+        bDetectRet = false;
     }
     if (!__DetectByTense(vEventFilterRes, vPatternFilterRes, rRes))
     {
         LOG(WARNING) << "DetectEventOmen Error __DetectByTense Failed" << endl;
-        return false;
+        bDetectRet = false;
     }
 
     for (int i = 0; i < vDocSents.size(); i++)
@@ -446,6 +447,6 @@ bool CEventOmenDetector::DetectEventOmen(vector<pstWeibo> &rCorpus, vector<pstWe
             delete vDocSents[i];
 
     LOG(INFO) << "DetectEventOmen Succeed" << endl;
-    return true;
+    return bDetectRet;
 }
 
