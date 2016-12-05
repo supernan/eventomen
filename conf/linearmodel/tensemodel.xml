@@ -5,4 +5,5 @@
     <label>../data/linear_models/tense_model/label2id</label>
     <wordseg>../../ws/wordSeg_data/</wordseg>
     <featid>1</featid>
+    <thresh>0.1</thresh>
 </linearmodel>

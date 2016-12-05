@@ -5,4 +5,5 @@
     <label>../data/linear_models/event_model/label2id</label>
     <wordseg>../../ws/wordSeg_data/</wordseg>
     <featid>0</featid>
+    <thresh>0.1</thresh>
 </linearmodel>
